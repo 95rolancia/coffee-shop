@@ -3,6 +3,10 @@ export interface Component {
   removeFrom(parent: HTMLElement): void;
 }
 
+export interface Composable {
+  addChild(child: Component): void;
+}
+
 export class BaseComponent<T extends HTMLElement> implements Component {
   protected readonly element: T;
 
