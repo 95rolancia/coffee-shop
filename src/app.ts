@@ -1,13 +1,16 @@
-import { Component, Composable } from './core/component';
-import { ProductListPage } from './pages/product-list';
-import { HttpClient, HttpClientImpl } from './service/http-client';
-import { IMAGE_DOMAIN_ENDPOINT } from './config/config';
-import { Product } from './components/product';
-import './styles.css';
+import { Component, Composable } from "./core/component";
+import { ProductListPage } from "./pages/product-list";
+import { HttpClient, HttpClientImpl } from "./service/http-client";
+import { IMAGE_DOMAIN_ENDPOINT } from "./config/config";
+import { Product } from "./components/product";
+import "./styles.css";
 
 class App {
   productListPage: Component & Composable;
-  constructor(private readonly root: HTMLDivElement, private readonly httpClient: HttpClient) {
+  constructor(
+    private readonly root: HTMLDivElement,
+    private readonly httpClient: HttpClient
+  ) {
     this.productListPage = new ProductListPage();
     this.productListPage.attachTo(this.root);
 
@@ -21,6 +24,6 @@ class App {
 }
 
 new App(
-  document.querySelector('#root')! as HTMLDivElement,
+  document.querySelector("#root")! as HTMLDivElement,
   new HttpClientImpl(IMAGE_DOMAIN_ENDPOINT)
 );

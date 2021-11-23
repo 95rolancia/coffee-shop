@@ -7,11 +7,12 @@ module.exports = {
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "eslint-config-prettier",
+    "plugin:prettier/recommended",
   ],
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint", "prettier"],
   rules: {
     "prettier/prettier": ["error", { endOfLine: "auto" }],
+    "@typescript-eslint/no-non-null-assertion": "off",
   },
 };
