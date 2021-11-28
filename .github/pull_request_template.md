@@ -1,8 +1,6 @@
 ---
 name: Pull Request
 about: Pull Request
-title: ''
-labels: bug
 assignees: 95rolancia
 ---
 
@@ -14,6 +12,6 @@ assignees: 95rolancia
 
 ## :speech_balloon: 작업 내용
 
-> Closes #1 #2 #3
+> Close #1 #2 #3
 
 (위 예시 줄과 이 줄을 지우고 Closes와 함께 이슈 번호 기입)
