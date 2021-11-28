@@ -1,13 +1,13 @@
-import { BaseComponent, Component, Composable } from "../core/component";
+import { BaseComponent, Component } from "../core/component";
 
 type onClickListener = () => void;
 
-interface ClickContainer extends Component, Composable {
+interface ClickContainer extends Component {
   setOnClickListener(listener: onClickListener): void;
 }
 
 export class Product
-  extends BaseComponent<HTMLElement>
+  extends BaseComponent<HTMLLIElement>
   implements ClickContainer
 {
   private clickListener?: onClickListener;
@@ -40,13 +40,6 @@ export class Product
     this.element.addEventListener("click", () => {
       this.clickListener && this.clickListener();
     });
-  }
-
-  addChild(child: Component): void {
-    const container = this.element.querySelector(
-      ".page-item__body"
-    )! as HTMLElement;
-    child.attachTo(container);
   }
 
   setOnClickListener(listener: onClickListener): void {
