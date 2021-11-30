@@ -1,29 +1,32 @@
-import { Component, Composable } from "./core/component";
+import { init } from "./routes/router";
+import CartPage from "./pages/cart";
+import { ProductDetailPage } from "./pages/product-detail";
 import { ProductListPage } from "./pages/product-list";
-import { HttpClient, HttpClientImpl } from "./service/http-client";
-import { IMAGE_DOMAIN_ENDPOINT } from "./config/config";
-import { Product } from "./components/product";
 import "./styles.css";
 
-class App {
-  productListPage: Component & Composable;
-  constructor(
-    private readonly root: HTMLDivElement,
-    private readonly httpClient: HttpClient
-  ) {
-    this.productListPage = new ProductListPage();
-    this.productListPage.attachTo(this.root);
+export default class App {
+  constructor(private readonly root: HTMLDivElement) {
+    init(() => this.route());
+    this.route();
+    window.addEventListener("popstate", this.route);
+  }
 
-    this.httpClient.getProducts().then((products) => {
-      products.forEach((product) => {
-        const { id, name, imageUrl, price } = product;
-        this.productListPage.addChild(new Product(id, name, imageUrl, price));
-      });
-    });
+  route(): void {
+    const { pathname } = location;
+
+    this.root.innerHTML = "";
+
+    if (pathname === "/") {
+      const productListPage = new ProductListPage();
+      productListPage.attachTo(this.root);
+    } else if (pathname.indexOf("/products/") === 0) {
+      const productDetailPage = new ProductDetailPage();
+      productDetailPage.attachTo(this.root);
+    } else if (pathname === "/cart") {
+      const cartPage = new CartPage();
+      cartPage.attachTo(this.root);
+    } else {
+      console.log("not found");
+    }
   }
 }
-
-new App(
-  document.querySelector("#root")! as HTMLDivElement,
-  new HttpClientImpl(IMAGE_DOMAIN_ENDPOINT)
-);

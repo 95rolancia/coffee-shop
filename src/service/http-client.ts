@@ -1,3 +1,5 @@
+import { IMAGE_DOMAIN_ENDPOINT } from "../config/config";
+
 export type ProductInfo = {
   id: string;
   name: string;
@@ -96,11 +98,13 @@ export interface HttpClient {
   getProducts: () => Promise<ProductInfo[]>;
 }
 
-export class HttpClientImpl implements HttpClient {
+class HttpClientImpl implements HttpClient {
   constructor(private readonly url: string) {}
-  getProducts(): Promise<ProductInfo[]> {
+  getProducts() {
     return new Promise<ProductInfo[]>((resolve) => {
       resolve(products);
     });
   }
 }
+
+export default new HttpClientImpl(IMAGE_DOMAIN_ENDPOINT);
