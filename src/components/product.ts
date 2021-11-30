@@ -1,4 +1,5 @@
 import { BaseComponent, Component } from "../core/component";
+import { numberCommaFormat } from "../util/util";
 
 type onClickListener = () => void;
 
@@ -35,7 +36,7 @@ export class Product
     const priceElement = this.element.querySelector(
       ".product__price"
     )! as HTMLDivElement;
-    priceElement.textContent = `${price}~`;
+    priceElement.textContent = `${numberCommaFormat(price)}원~`;
 
     this.element.addEventListener("click", () => {
       this.clickListener && this.clickListener();

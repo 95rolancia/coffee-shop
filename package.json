@@ -4,7 +4,7 @@
   "description": "coffee shopping mall",
   "private": "true",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "watch": "webpack --watch",
     "start": "webpack serve --open",
     "build": "webpack"
@@ -17,6 +17,7 @@
     "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-typescript": "^7.16.0",
+    "@types/jest": "^27.0.3",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "babel-loader": "^8.2.3",
@@ -25,6 +26,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "html-webpack-plugin": "^5.3.2",
+    "jest": "^27.4.1",
     "prettier": "^2.4.1",
     "style-loader": "^3.3.0",
     "ts-loader": "^9.2.6",
