@@ -1,32 +1,10 @@
-import { BaseComponent, Composable } from "../core/component";
-import { Product } from "../components/product";
-import httpClient from "../service/http-client";
-import { routeChange } from "../routes/router";
+import { BaseComponent } from "../core/component";
+import { ProductList } from "../components/product-list";
 
-export class ProductListPage
-  extends BaseComponent<HTMLUListElement>
-  implements Composable
-{
+export class ProductListPage extends BaseComponent<HTMLDivElement> {
   constructor() {
-    super(`<div class="product-list-page">
-            <ul class="product-list"></ul>
-          </div>`);
-
-    httpClient.getProducts().then((products) => {
-      products.forEach((product) => {
-        const { id, name, imageUrl, price } = product;
-        this.addChild(new Product(id, name, imageUrl, price));
-      });
-    });
-  }
-
-  addChild(pageItem: Product): void {
-    pageItem.attachTo(this.element.querySelector(".product-list")!);
-    pageItem.setOnClickListener(() => {
-      const productId = pageItem.element.dataset["id"];
-      if (productId) {
-        routeChange(`/products/${productId}`);
-      }
-    });
+    super(`<div class="product-list-page"></div>`);
+    const productList = new ProductList();
+    productList.attachTo(this.element);
   }
 }
