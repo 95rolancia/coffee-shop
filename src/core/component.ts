@@ -1,29 +1,53 @@
-export interface Component {
-  attachTo(parent: HTMLElement, position?: InsertPosition): void;
-  removeFrom(parent: HTMLElement): void;
-}
+/* eslint-disable */
+type State = {
+  [key: string]: any;
+};
 
-export interface Composable {
-  addChild(child: Component): void;
-}
+export abstract class Component {
+  state: State;
 
-export class BaseComponent<T extends HTMLElement> implements Component {
-  readonly element: T;
-
-  constructor(htmlString: string) {
-    const template = document.createElement("template");
-    template.innerHTML = htmlString;
-    this.element = template.content.firstElementChild! as T;
+  constructor(readonly target: HTMLElement, readonly props?: State) {
+    this.state = {};
+    this.setup();
+    this.setEvent();
+    this.render();
   }
 
-  attachTo(parent: HTMLElement, position: InsertPosition = "afterbegin"): void {
-    parent.insertAdjacentElement(position, this.element);
+  setup(): void {}
+
+  mounted(): void {}
+
+  setEvent(): void {}
+
+  template(): string {
+    return "";
   }
 
-  removeFrom(parent: HTMLElement): void {
-    if (parent !== this.element.parentElement) {
-      throw new Error(`Parent mismtach `);
-    }
-    parent.removeChild(this.element);
+  render(): void {
+    this.target.innerHTML = this.template();
+    this.mounted();
+  }
+
+  setState(nextState: State): void {
+    this.state = { ...this.state, ...nextState };
+    this.render();
+  }
+
+  addEvent<K extends keyof HTMLElementEventMap>(
+    eventType: K,
+    selector: string,
+    callback: (event: any) => void
+  ): void {
+    const children = [...this.target.querySelectorAll(selector)];
+
+    const isTarget = (target: HTMLElement) =>
+      children.includes(target) || target.closest(selector);
+
+    this.target.addEventListener(eventType, (event: any) => {
+      if (!isTarget(event.target)) {
+        return;
+      }
+      callback(event);
+    });
   }
 }

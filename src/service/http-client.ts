@@ -94,6 +94,59 @@ const products: ProductInfo[] = [
   },
 ];
 
+export type ProductOption = {
+  id: number;
+  name: string;
+  price: number;
+  stock: number;
+  created_at: Date;
+  updated_at: Date;
+};
+
+export type ProductDetailType = {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  productOptions: ProductOption[];
+};
+
+const productDetail: { [key: string]: ProductDetailType } = {
+  12: {
+    id: 12,
+    name: "에스프레소 머신",
+    price: 300000,
+    imageUrl:
+      "https://grepp-cloudfront.s3.ap-northeast-2.amazonaws.com/programmers_imgs/assignment_image/espresso_maker_2.png",
+    productOptions: [
+      {
+        id: 15,
+        name: "기본형",
+        price: 0,
+        stock: 0,
+        created_at: new Date("2021-08-23T22:57:22.367Z"),
+        updated_at: new Date("2021-08-23T22:57:22.371Z"),
+      },
+      {
+        id: 25,
+        name: "기본형",
+        price: 0,
+        stock: 555,
+        created_at: new Date("2021-08-23T23:03:21.200Z"),
+        updated_at: new Date("2021-08-23T23:03:21.203Z"),
+      },
+      {
+        id: 26,
+        name: "기본 도구 추가형",
+        price: 100000,
+        stock: 5,
+        created_at: new Date("2021-08-23T23:03:39.440Z"),
+        updated_at: new Date("2021-08-23T23:03:39.444Z"),
+      },
+    ],
+  },
+};
+
 export interface HttpClient {
   getProducts: () => Promise<ProductInfo[]>;
 }
@@ -103,6 +156,15 @@ class HttpClientImpl implements HttpClient {
   getProducts() {
     return new Promise<ProductInfo[]>((resolve) => {
       resolve(products);
+    });
+  }
+
+  getProductDetail(id: string) {
+    return new Promise<ProductDetailType>((resolve, reject) => {
+      if (productDetail[`${id}`] != null) {
+        resolve(productDetail[`${id}`]!);
+      }
+      reject("404 not found");
     });
   }
 }

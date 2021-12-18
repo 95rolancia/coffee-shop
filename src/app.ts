@@ -1,11 +1,11 @@
-import { init } from "./routes/router";
-import CartPage from "./pages/cart";
-import { ProductDetailPage } from "./pages/product-detail";
-import { ProductListPage } from "./pages/product-list";
+import { init, routeChange } from "./routes/router";
+import { ProductListPage } from "./pages/product-list-page";
+import { ProductDetailPage } from "./pages/product-detail-page";
+import CartPage from "./pages/cart-page";
 import "./styles.css";
 
 export default class App {
-  constructor(private readonly root: HTMLDivElement) {
+  constructor(readonly root: HTMLDivElement) {
     init(() => this.route());
     this.route();
     window.addEventListener("popstate", this.route);
@@ -13,18 +13,20 @@ export default class App {
 
   route(): void {
     const { pathname } = location;
-
     this.root.innerHTML = "";
 
+    console.log("routing");
     if (pathname === "/") {
-      const productListPage = new ProductListPage();
-      productListPage.attachTo(this.root);
+      new ProductListPage(this.root);
     } else if (pathname.indexOf("/products/") === 0) {
-      const productDetailPage = new ProductDetailPage();
-      productDetailPage.attachTo(this.root);
+      const [, , productId] = pathname.split("/");
+      if (productId == null) {
+        routeChange(`/`);
+        return;
+      }
+      new ProductDetailPage(this.root, { productId });
     } else if (pathname === "/cart") {
-      const cartPage = new CartPage();
-      cartPage.attachTo(this.root);
+      new CartPage(this.root);
     } else {
       console.log("not found");
     }
