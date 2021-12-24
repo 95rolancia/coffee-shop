@@ -1,12 +1,13 @@
-import { ProductDetail } from "../components/product-detail";
 import { Component } from "../core/component";
-import httpClient from "../service/http-client";
+import httpClient, { ProductOption } from "../service/http-client";
+import { ProductDetail } from "../components/product-detail";
+import { SelectedOption } from "../components/selected-options";
 
 export class ProductDetailPage extends Component {
   override setup(): void {
-    console.log("product detail page setup");
     this.state = {
       productDetail: null,
+      selectedOptions: [],
     };
 
     httpClient
@@ -21,10 +22,22 @@ export class ProductDetailPage extends Component {
       ".product-detail-page"
     )! as HTMLDivElement;
 
-    new ProductDetail($productDetail, { state: this.state });
+    new ProductDetail($productDetail, {
+      state: this.state,
+      selectOption: (options: SelectedOption[]) => this.selectOption(options),
+    });
   }
 
   override template(): string {
     return `<div class="product-detail-page"></div>`;
+  }
+
+  get selectedOptions(): ProductOption[] {
+    const { selectedOptions } = this.state;
+    return selectedOptions || [];
+  }
+
+  selectOption(options: SelectedOption[]): void {
+    this.setState({ ...this.state, selectedOptions: options });
   }
 }

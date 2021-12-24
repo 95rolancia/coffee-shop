@@ -1,5 +1,6 @@
 import { Component } from "../core/component";
 import { ProductList } from "../components/product-list";
+
 import httpClient from "../service/http-client";
 
 export class ProductListPage extends Component {
