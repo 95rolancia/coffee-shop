@@ -1,4 +1,5 @@
 import { Component } from "../core/component";
+import { ProductOption } from "../service/http-client";
 import { ProductDetail } from "./product-detail";
 
 export type SelectedOption = {
@@ -64,6 +65,44 @@ export class SelectedOptions extends Component {
       (acc: number, option: SelectedOption) =>
         acc + (productPrice + option.optionPrice) * option.quantity,
       0
+    );
+  }
+
+  override setEvent(): void {
+    this.addEvent(
+      "change",
+      ".product-detail__selected-options",
+      ({ target }) => {
+        if (target.tagName === "INPUT") {
+          try {
+            const nextQuantity = parseInt(target.value);
+            const nextSelectedOptions = [...this.state["selectedOptions"]];
+
+            if (typeof nextQuantity === "number") {
+              const { product } = this.state;
+
+              const optionId = parseInt(target.dataset.optionid);
+              const option = product.productOptions.find(
+                (option: ProductOption) => option.id === optionId
+              );
+
+              const selectedOptionIndex = nextSelectedOptions.findIndex(
+                (selectedOption) => selectedOption.optionId === optionId
+              );
+
+              nextSelectedOptions[selectedOptionIndex].quantity =
+                option.stock >= nextQuantity ? nextQuantity : option.stock;
+
+              this.setState({
+                ...this.state,
+                selectedOptions: nextSelectedOptions,
+              });
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        }
+      }
     );
   }
 }
