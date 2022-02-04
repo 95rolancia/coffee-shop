@@ -2,6 +2,7 @@ import { Component } from "../core/component";
 import { routeChange } from "../routes/router";
 import { ProductOption } from "../service/http-client";
 import { getItem, setItem } from "../util/storage";
+import { ProductOption } from "../service/http-client";
 import { ProductDetail } from "./product-detail";
 
 export type SelectedOption = {
@@ -106,7 +107,7 @@ export class SelectedOptions extends Component {
         }
       }
     );
-
+    
     this.addEvent(
       "click",
       ".product-detail__selected-options",
