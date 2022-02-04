@@ -1,4 +1,7 @@
 import { Component } from "../core/component";
+import { routeChange } from "../routes/router";
+import { ProductOption } from "../service/http-client";
+import { getItem, setItem } from "../util/storage";
 import { ProductOption } from "../service/http-client";
 import { ProductDetail } from "./product-detail";
 
@@ -101,6 +104,29 @@ export class SelectedOptions extends Component {
           } catch (e) {
             console.log(e);
           }
+        }
+      }
+    );
+    
+    this.addEvent(
+      "click",
+      ".product-detail__selected-options",
+      ({ target }) => {
+        const { selectedOptions } = this.state;
+
+        if (target.className === "order-button") {
+          const cartData = getItem("products-cart", []);
+          setItem(
+            "products-cart",
+            cartData.concat(
+              selectedOptions.map((selectedOption: SelectedOption) => ({
+                productId: selectedOption.productId,
+                optionId: selectedOption.optionId,
+                quantity: selectedOption.quantity,
+              }))
+            )
+          );
+          routeChange("/cart");
         }
       }
     );
