@@ -15,7 +15,6 @@ export default class App {
     const { pathname } = location;
     this.root.innerHTML = "";
 
-    console.log("routing");
     if (pathname === "/") {
       new ProductListPage(this.root);
     } else if (pathname.indexOf("/products/") === 0) {
